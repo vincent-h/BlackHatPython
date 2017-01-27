@@ -15,7 +15,8 @@ for ip in list(ip):
 
   if response == 0:
     ip_list.append(str(ip))
-    dns_list.append(socket.gethostbyaddr(str(ip))[0])
+    hostname = socket.gethostbyaddr(str(ip))[0]
+    dns_list.append(hostname)
   else:
     pass
 
@@ -23,10 +24,12 @@ for ip in list(ip):
 wb = openpyxl.Workbook()
 ws = wb.active
 ws['A1'] = "Active IP Adresses"
+ws['C1'] = "Hostname"
 ws.append([])
 
+#adds the ip and hostname to the excel file before saving.
 for ip in ip_list:
-  for dns in dns_list:
-    ws.append([ip, dns])
-print dns_list
+    counter = 0 # as ip_list is 1:1 length with dns_list, this was the easiest workaround.
+    ws.append([ip, '', dns_list[counter]])
+    counter += 1
 wb.save(raw_input("Geef een bestandsnaam op: ")+ ".xlsx")
